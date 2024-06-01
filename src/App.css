@@ -1,0 +1,545 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (max-width: 900px) {
+    .logo {
+        padding: 0 20px;
+    }
+
+    #t {
+        display: flex !important;
+        flex-direction: column;
+        padding-left: 20px !important;
+    }
+
+    .thongtin form {
+        max-width: 900px !important;
+        padding-bottom: 30px !important;
+    }
+
+    .form textarea,
+    .donhang {
+        max-width: 900px !important;
+    }
+
+    .donhang {
+        margin-left: 0 !important;
+        margin-bottom: 100px;
+    }
+
+    .donhang tr {
+        min-width: 0 !important;
+    }
+}
+
+hr {
+    color: rgb(185, 185, 184);
+
+}
+
+hr:last-child {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .ft {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .liehe {
+        display: flex;
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+        padding-right: 20px;
+        background-color: rgba(0, 0, 0, 0.6);
+        margin-left: -20px;
+        justify-content: center;
+    }
+
+    .fb {
+        width: 50%;
+        border-radius: 5px;
+        margin: 5px 15.52px 5px 0px;
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+    }
+
+    .sdt,
+    .sdt1 {
+        display: flex;
+        align-items: center;
+        width: 40%;
+        border-radius: 5px;
+        line-height: 40px;
+        margin: 5px 0;
+    }
+
+    .sdt1 {
+        display: block !important;
+    }
+
+    .sdt {
+        display: none;
+    }
+}
+
+.sdt1 {
+    display: none;
+}
+
+@media (max-width: 760px) {
+    .conten h2 {
+        font-size: 25px;
+        margin-left: -10px !important;
+    }
+
+    .scroll-btn {
+        display: none;
+    }
+}
+
+@media (max-width: 1023px) {
+
+
+    .hamburger {
+        display: block;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 30px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .nav.none {
+        display: flex;
+        flex-direction: column !important;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 104%;
+        z-index: 9999;
+        background-color: #757a70;
+        opacity: 0.8;
+        overflow: hidden;
+        color: black;
+    }
+
+
+
+    .nav.block {
+        display: none;
+    }
+
+    .nav ul {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pd {
+        margin: 5px 0;
+        padding: 4px 0px;
+        font-size: 24px;
+        text-transform: uppercase;
+        letter-spacing: 0.48px;
+        line-height: 38.4px;
+    }
+
+    .none a {
+        color: white;
+    }
+
+    .dropdown .drop {
+        background-color: #678d38;
+        border: 2px solid white;
+        display: none !important;
+    }
+
+    .dropdown {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .drop {
+        position: absolute;
+        top: 0px;
+        left: 180px;
+    }
+
+    #thoat {
+        display: block !important;
+    }
+
+    .rau h2 {
+        margin-left: 0 !important;
+    }
+
+    .tk {
+        display: none;
+
+    }
+
+    .spp {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .spp form {
+        padding-right: 0 !important;
+        border: 0 !important;
+    }
+
+    .nk {
+        padding: 0 !important;
+    }
+
+    .thanhtoan {
+        margin-left: 10px !important;
+    }
+
+    .bi-chevron-down,
+    .bi-chevron-up {
+        display: block;
+        color: white;
+        cursor: pointer;
+    }
+
+    .pd:nth-child(1) {
+        animation: li 0.5s ease;
+    }
+
+    .pd:nth-child(2) {
+        animation: li 0.8s ease;
+    }
+
+    .pd:nth-child(3) {
+        animation: li 1s ease;
+    }
+
+    .pd:nth-child(4) {
+        animation: li 1.2s ease;
+    }
+
+    .pd:nth-child(5) {
+        animation: li 1.4s ease;
+    }
+
+    .pd:nth-child(6) {
+        animation: li 1.5s ease;
+    }
+
+    @keyframes li {
+        0% {
+            transform: translateY(-80px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translatey(0px);
+            opacity: 1;
+        }
+    }
+
+    @keyframes hai {
+        0% {
+            transform: translateY(-80px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translatey(0px);
+            opacity: 1;
+        }
+    }
+}
+
+@media (max-width: 1147px) {
+    .tk input {
+        width: 80%;
+    }
+
+
+    .hai,
+    .tc {
+        width: 23%;
+    }
+
+    .iframe iframe {
+        width: 100%;
+    }
+
+
+}
+
+@media (max-width: 1210px) {
+    .spp form {
+
+        margin-top: -43px !important;
+    }
+}
+
+@media (max-width: 1170px) {
+    .image-container {
+        width: 110%;
+
+    }
+
+    .spp form {
+
+        margin-top: -35px !important;
+    }
+
+
+    .th {
+        padding: 19px 18px !important;
+    }
+
+    .product-subtotal {
+        padding-left: 0px !important;
+    }
+
+    .section-content {
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-around;
+        gap: 25px;
+    }
+
+    .conten h2 {
+        font-size: 30px;
+
+    }
+
+    .rau h2 {
+        margin-left: 10px;
+
+    }
+
+    .conten h3 {
+        font-size: 20px;
+        margin-left: -10px;
+    }
+
+    .banner-layers:nth-child(3) {
+        padding-right: 17px;
+    }
+
+    .banner-layers:nth-child(1) {
+        margin-left: -20px;
+    }
+}
+
+@media (max-width: 830px) {
+    .hai {
+        width: calc(47% - 20px);
+    }
+
+    .tc {
+        width: calc(47% - 20px);
+
+    }
+
+    .sp {
+        padding: 0;
+    }
+
+}
+
+@media (max-width: 360px) {
+    .price-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media (max-width: 650px) {
+    .conten h2 {
+        margin-left: 20px;
+        font-size: 20px;
+        overflow: hidden;
+    }
+
+    .conten h3 {
+        font-size: 13px;
+        margin-left: 0px;
+    }
+
+    .chu label,
+    .chu p {
+        padding: 10px 0;
+        display: none;
+    }
+
+    .th {
+        padding: 19px 0 !important;
+    }
+
+    .tintuc {
+        display: flex;
+        flex-direction: column;
+        padding-right: 19px;
+    }
+
+    .lh {
+        padding-left: 16px;
+    }
+
+    .lh textarea {
+        width: 100%;
+        max-height: 120px;
+        max-width: 531px;
+        padding: 10px;
+        font-size: 17px;
+    }
+
+    .iframe iframe {
+        width: 100%;
+        height: 300px;
+    }
+}
+
+@media (max-width: 438px) {
+    .discounted-price {
+        font-size: 15px;
+    }
+
+    .fb,
+    .sdt {
+        font-size: 13px;
+    }
+
+}
+
+@media (max-width: 420px) {
+    .conten h2 {
+        margin-left: 2px !important;
+        font-size: 28px !important;
+    }
+
+    .conten h3 {
+        font-size: 23px !important;
+        margin-left: 0px;
+    }
+
+
+}
+
+@media (max-width: 570px) {
+    .section-content {
+        display: flex !important;
+        flex-wrap: wrap;
+        flex-direction: column;
+        width: 93%;
+        gap: 0;
+        padding: 0 13px 0 2px;
+    }
+
+    .tsp h3 {
+        font-size: 15px;
+
+    }
+
+    .conten h2 {
+        font-size: 50px;
+    }
+
+    .conten h3 {
+        font-size: 33px;
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 550px) {
+
+    .block {
+        display: none;
+    }
+
+    .tongphu h4,
+    .cn {
+        margin-left: 0 !important;
+    }
+
+}
+
+@media (max-width: 376px) {
+    .product-name {
+        font-size: 13px !important;
+    }
+}
+
+
+@media (max-width: 410px) {
+    .hai img {
+        margin-left: 10px;
+    }
+
+    .addToCartBtn {
+        padding: 10px 20px;
+
+    }
+
+    .tsp h3 {
+        font-size: 13px;
+    }
+}
+
+
+
+.banner-layers:nth-child(1) {
+    margin-left: 0px;
+}
+
+#thoat {
+    display: none;
+}
+
+.bi-cart {
+    position: relative;
+}
+
+.bi-x-lg {
+    font-size: 25px;
+    opacity: 0.5;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.bi-x-lg:hover {
+    opacity: 1;
+}
+
+
+.drops {
+
+    background-color: #487022;
+}
+
+@media (max-width: 1810px) {
+    .dropp {
+        display: none;
+    }
+}
+
+.button-content {
+    position: relative;
+    z-index: 1;
+}
