@@ -4,7 +4,6 @@ import { Link, NavLink } from "react-router-dom";
 const Admin = (props) => {
   const data = props.data;
   const { deletes } = props;
-
   return (
     <>
       <button className="flex justify-end max-w-[1480px] w-full mt-4">
@@ -16,19 +15,19 @@ const Admin = (props) => {
         </NavLink>
       </button>
       <div
-        className="my-4 mb-10 max-w-[1450px] m-auto rounded-xl px-4"
+        className="my-4 mb-10 max-w-[1450px] m-auto rounded-xl"
         style={{ boxShadow: "0px 1px 10px 1px #b7b3b3" }}
       >
-        <table className="px-4 ">
-          <thead className="">
-            <tr>
-              <th className="py-5 text-center">Stt </th>
-              <th className="py-5 text-center">Name</th>
-              <th className="py-5 text-center">Price </th>
-              <th className="py-5 text-center">Brand</th>
-              <th className="py-5 text-center">Category</th>
-              <th className="py-5 text-center">Image</th>
-              <th className="py-5 text-center">Active</th>
+        <table>
+          <thead>
+            <tr >
+              <th className="py-5 px-3 text-center">Stt </th>
+              <th className="py-5 px-3 text-center">Name</th>
+              <th className="py-5 px-3 text-center">Price </th>
+              <th className="py-5 px-3 text-center">Brand</th>
+              <th className="py-5 px-3 text-center">Category</th>
+              <th className="py-5 px-3 text-center">Image</th>
+              <th className="py-5 px-3 text-center">Active</th>
             </tr>
           </thead>
           <tbody>

@@ -1,39 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 const Add = ({ submit }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState(null);
 
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        setSelectedImage(e.target.result);
+  const fileInputRef = useRef(null);
+  const fileInput = useRef(null);
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setThumbnailUrl(base64String);
+        setValue("thumbnail", base64String);
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
+  const [images, setImages] = useState([]);
+  const [error, setError] = useState("");
+
+  const handleImg = () => {
+    fileInput.current.click();
+  };
+
+  const handleFileImage = (event) => {
+    const files = Array.from(event.target.files);
+    const newImages = [];
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        newImages.push(e.target.result);
+        setImages((prevImages) => [...prevImages, e.target.result]);
+      };
+      reader.onerror = () => {
+        setError("Failed to read file");
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  useEffect(() => {
+    setValue("images", images);
+  }, [images]);
+
   const schema = z.object({
     title: z
       .string()
-      .min(6, { message: "Title must be at least 6 characters" }),
+      .min(6, { message: "Title must be at least 6 characters" })
+      .optional(),
     description: z
       .string()
-      .min(6, { message: "Description must be at least 6 characters" }),
-    price: z.number().min(10),
+      .min(6, { message: "Description must be at least 6 characters" })
+      .optional(),
+    price: z.number().min(10).optional(),
     brand: z
       .string()
-      .min(6, { message: "Brand must be at least 6 characters" }),
+      .min(6, { message: "Brand must be at least 6 characters" })
+      .optional(),
     category: z
       .string()
-      .min(6, { message: "Category must be at least 6 characters" }),
-    img: z.string().url("Must be a valid URL"),
+      .min(6, { message: "Category must be at least 6 characters" })
+      .optional(),
+    thumbnail: z.string().url("Must be a valid URL").optional(),
+    images: z.array(z.string().url("Must be a valid URL")),
   });
-  
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -88,19 +130,67 @@ const Add = ({ submit }) => {
           )}
         </div>
         <div className="mb-3">
-          <input type="file" accept="image/*" {...register("img")} onChange={handleImageChange} />
-          {selectedImage && (
-            <div>
-              <img
-                src={selectedImage}
-                alt="Selected"
-                style={{ width: "300px", height: "auto" }}
-                
-              />
-            </div>
+          <label htmlFor="thumbnail" className="form-label">
+            Thumbnail
+          </label>
+          <br />
+          {thumbnailUrl && (
+            <img
+              src={thumbnailUrl}
+              alt="Thumbnail"
+              className="rounded mb-2 max-w-[400px] m-auto max-h-[300px] object-cover"
+            />
+          )}
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleClick}
+          >
+            Upload Thumbnail
+          </button>
+          {errors.thumbnail && (
+            <p className="text-red-500">{errors.thumbnail.message}</p>
           )}
         </div>
-        <p className="text-red-500">{errors.img?.message}</p>
+        <div className="mb-3">
+          <label htmlFor="thumbnail" className="form-label">
+            Images
+          </label>
+          <br />
+          <div className="flex justify-center gap-3">
+            {images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Thumbnail ${index + 1}`}
+                className="rounded mb-2 w-[100px] h-[100px] object-cover"
+              />
+            ))}
+          </div>
+
+          <input
+            type="file"
+            ref={fileInput}
+            style={{ display: "none" }}
+            onChange={handleFileImage}
+            multiple
+          />
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleImg}
+          >
+            Upload Images
+          </button>
+          {error && <p className="text-red-500">{error}</p>}
+        </div>
+        <p className="text-red-500">{errors.images?.message}</p>
 
         <div className="mb-3">
           <label htmlFor="price" className="form-label">

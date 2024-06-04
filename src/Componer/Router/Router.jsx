@@ -38,6 +38,7 @@ export default function Router() {
         console.log(error);
       }
     })();
+    // console.log(datas);
   };
   const deletes = async (id) => {
     if (confirm("Delete successfully, redirect to admin page?")) {
@@ -47,16 +48,15 @@ export default function Router() {
     }
   };
   const UpdateProduct = (datas) => {
-    // (async () => {
-    //   try {
-    //     const res = await Productupdate(datas.id, datas);
-    //     setData(data.map((item) => (item.id === datas.id ? res.data : item)));
-    //     navigate("/admin");
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // })();
-    console.log(datas);
+    (async () => {
+      try {
+        const res = await Productupdate(datas.id, datas);
+        setData(data.map((item) => (item.id === datas.id ? res.data : item)));
+        navigate("/admin");
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   };
   return (
     <div>

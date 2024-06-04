@@ -35,7 +35,8 @@
         "https://cdn.dummyjson.com/product-images/6/2.jpg",
         "https://cdn.dummyjson.com/product-images/6/3.png",
         "https://cdn.dummyjson.com/product-images/6/4.jpg"
-      ]
+      ],
+      "img": "blob:http://localhost:5173/84a9301f-1a64-47c4-85d7-7cfda93c2d1b"
     },
     {
       "id": "7",
@@ -316,7 +317,7 @@
     },
     {
       "id": "22",
-      "title": "Elbow Macaroni - 400 gm",
+      "title": "Elbow Macaroni - 400 gms",
       "description": "Product details of Bake Parlor Big Elbow Macaroni - 400 gm",
       "price": 14,
       "discountPercentage": 15.58,
@@ -330,14 +331,6 @@
         "https://cdn.dummyjson.com/product-images/22/2.jpg",
         "https://cdn.dummyjson.com/product-images/22/3.jpg"
       ]
-    },
-    {
-      "id": "1c94",
-      "title": "ádsdsd",
-      "description": "ádasdsdf",
-      "price": 44,
-      "brand": "ádsdsdf",
-      "category": "ádsdfsdf"
     }
   ],
   "total": 100,

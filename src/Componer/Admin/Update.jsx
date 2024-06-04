@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -13,28 +13,16 @@ const schema = z.object({
   category: z.string().min(1, "Category is required"),
   price: z.number().min(0, "Price must be greater than or equal to 0"),
   description: z.string().min(1, "Description is required"),
-  img: z.string().url("Must be a valid URL"),
-  image: z.string().url("Must be a valid URL"),
+  thumbnail: z.string().url("Must be a valid URL").optional(),
+  images: z.array(z.string().url("Must be a valid URL")),
 });
 
-const Update = (pro) => {
-  const fileInputRef = React.useRef(null);
-
-  const update = pro.UpdateProduct;
-  const [data, setData] = useState({});
-  const [img, setImg] = useState([]);
-  const [imageUrl, setImageUrl] = useState(null);
-  const [image, setImage] = useState(null);
-  const param = useParams();
-  const handleClick = () => {
-    fileInputRef.current.click();
-  };
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const url = URL.createObjectURL(file);
-    setImageUrl(url);
-    setImage(file);
-  };
+const Update = ({ UpdateProduct }) => {
+  const fileInputRef = useRef(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState(null);
+  const { id } = useParams();
+  const [images, setImages] = useState([]);
+  const [error, setError] = useState("");
   const {
     register,
     handleSubmit,
@@ -47,40 +35,74 @@ const Update = (pro) => {
 
   const fetchProductDetails = async () => {
     try {
-      const res = await ProductDetail(param.id);
-      // setData(res.data);
-      // setImg(res.data.images);
-      // setValue("id", res.data.id);
-      // setValue("title", res.data.title);
-      // setValue("description", res.data.description);
-      // setValue("price", res.data.price);
-      // setValue("brand", res.data.brand);
-      // setValue("category", res.data.category);
-      // setValue("img", res.data.thumbnail);
-      // setValue("image", res.data.images.join(","));
+      const res = await ProductDetail(id);
       reset(res.data);
+      setThumbnailUrl(res.data.thumbnail);
+      setImages(res.data.images);
     } catch (error) {
       if (error.name !== "AbortError") {
         console.error("Failed to fetch product details:", error);
       }
     }
   };
-
   useEffect(() => {
     fetchProductDetails();
-  }, [param.id, setValue]);
+  }, [id]);
 
-  const UpdateProduct = async (data) => {
-    // Your update product logic here
+  const handleClick = () => {
+    fileInputRef.current.click();
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setThumbnailUrl(base64String);
+        setValue("thumbnail", base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const fileInput = useRef(null);
+
+  const handleImg = () => {
+    fileInput.current.click();
+  };
+
+  const handleFileImg = (event) => {
+    const files = Array.from(event.target.files);
+    const newImages = [];
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (typeof e.target.result === "string") {
+          newImages.push(e.target.result);
+          setImages((prevImages) => [...prevImages, e.target.result]);
+        } else {
+          setError("Failed to read file as a string");
+        }
+      };
+      reader.onerror = () => {
+        setError("Failed to read file");
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+  useEffect(() => {
+    setValue("images", images);
+  }, [images]);
   return (
     <form
-      onSubmit={handleSubmit(update)}
+      onSubmit={handleSubmit(UpdateProduct)}
       className="max-w-[500px] mx-auto my-10"
     >
       <h2 className="text-center">Update Product</h2>
 
+      <input type="hidden" id="id" {...register("id")} />
       <div className="mb-3">
         <label htmlFor="title" className="form-label">
           Title
@@ -89,68 +111,67 @@ const Update = (pro) => {
           className="form-control"
           type="text"
           id="title"
-          // defaultValue={data?.title || ""}
           {...register("title")}
         />
         {errors.title && <p className="text-red-500">{errors.title.message}</p>}
-        {errors.img && <p className="text-red-500">{errors.img.message}</p>}
       </div>
-
-      <input
-        type="text"
-        id="id"
-        // defaultValue={data?.id || ""}
-        className="hidden"
-        {...register("id")}
-      />
 
       <div className="mb-3">
         <label htmlFor="thumbnail" className="form-label">
           Thumbnail
         </label>
-
-        <img
-          src={data.thumbnail || ""}
-          // defaultValue={data?.thumbnail || ""}
-          // {...register("img")}
-          alt="Thumbnail"
-          className="rounded"
-          {...register("img")}
-        />
-
+        {thumbnailUrl && (
+          <img
+            src={thumbnailUrl}
+            alt="Thumbnail"
+            className="rounded mb-2 max-w-[400px] max-h-[300px] m-auto object-cover"
+          />
+        )}
         <input
           type="file"
           ref={fileInputRef}
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
-        <div
-          className="py-1 rounded-md px-2 max-w-[33px] flex justify-center"
-          style={{ backgroundColor: "#fff3" }}
+        <button
+          type="button"
+          className="btn btn-secondary"
           onClick={handleClick}
-          {...register("img")}
-          // defaultValue={imageUrl || ""}
         >
-          sdfd
-        </div>
+          Upload Thumbnail
+        </button>
+        {errors.thumbnail && (
+          <p className="text-red-500">{errors.thumbnail.message}</p>
+        )}
       </div>
-
       <div className="mb-3">
-        <label htmlFor="img" className="form-label">
-          Image
+        <label htmlFor="thumbnail" className="form-label">
+          Images
         </label>
-        <div className="flex">
-          {img?.map((item, index) => (
+        <br />
+        <div className="flex justify-center gap-4">
+          {images.map((image, index) => (
             <img
-              src={item}
-              alt={`product-${index}`}
-              key={item}
-              className="w-[100px] h-[100px] object-cover rounded mr-2"
+              key={index}
+              src={image}
+              alt={`Thumbnail ${index + 1}`}
+              className="rounded mb-2 w-[100px] h-[100px] object-cover"
             />
           ))}
         </div>
-      </div>
 
+        <input
+          type="file"
+          ref={fileInput}
+          style={{ display: "none" }}
+          onChange={handleFileImg}
+          multiple
+        />
+        <button type="button" className="btn btn-secondary" onClick={handleImg}>
+          Upload Images
+        </button>
+        {error && <p className="text-red-500">{error}</p>}
+      </div>
       <div className="mb-3">
         <label htmlFor="brand" className="form-label">
           Brand
@@ -159,7 +180,6 @@ const Update = (pro) => {
           className="form-control"
           type="text"
           id="brand"
-          // defaultValue={data?.brand || ""}
           {...register("brand")}
         />
         {errors.brand && <p className="text-red-500">{errors.brand.message}</p>}
@@ -173,7 +193,6 @@ const Update = (pro) => {
           className="form-control"
           type="text"
           id="category"
-          // defaultValue={data?.category || ""}
           {...register("category")}
         />
         {errors.category && (
@@ -190,7 +209,6 @@ const Update = (pro) => {
           type="number"
           min={0}
           id="price"
-          // defaultValue={data?.price || ""}
           {...register("price", { valueAsNumber: true })}
         />
         {errors.price && <p className="text-red-500">{errors.price.message}</p>}
@@ -203,7 +221,6 @@ const Update = (pro) => {
         <textarea
           className="form-control"
           id="description"
-          // defaultValue={data?.description || ""}
           {...register("description")}
           rows={3}
         />

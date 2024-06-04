@@ -41,6 +41,7 @@ const Detail = () => {
       setQuantity(quantity - 1);
     }
   };
+  console.table(data);
   return (
     <div className="max-w-[1350px] mx-auto my-7 px-3">
       <div className="flex  gap-6">
@@ -78,12 +79,13 @@ const Detail = () => {
         <div>
           <div className="text-xl">{data.title}</div>
           <div>
-            {[...Array(Math.round(rating))].map((_, index) => (
-              <i
-                className="fa-solid fa-star text-yellow-300 ml-2 mb-2 text-[13px]"
-                key={index}
-              ></i>
-            ))}
+            {data.rating &&
+              [...Array(Math.round(rating))].map((_, index) => (
+                <i
+                  className="fa-solid fa-star text-yellow-300 ml-2 mb-2 text-[13px]"
+                  key={index}
+                ></i>
+              ))}
           </div>
           <div className="text-red-500 text-xl">
             {price.toLocaleString("vi-VN", {
