@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Index = (por) => {
   const data = por.data;
-  console.log(por);
   return (
     <div>
       <div id="than">

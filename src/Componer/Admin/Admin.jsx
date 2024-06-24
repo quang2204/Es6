@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
-const Admin = (props) => {
-  const data = props.data;
-  const { deletes } = props;
+const Admin = ({ local, data, deletes }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!local) {
+      navigate("/admin/Login");
+    }
+  }, [local, navigate]);
   return (
     <>
       <button className="flex justify-end max-w-[1480px] w-full mt-4">
@@ -20,7 +24,7 @@ const Admin = (props) => {
       >
         <table>
           <thead>
-            <tr >
+            <tr>
               <th className="py-5 px-3 text-center">Stt </th>
               <th className="py-5 px-3 text-center">Name</th>
               <th className="py-5 px-3 text-center">Price </th>

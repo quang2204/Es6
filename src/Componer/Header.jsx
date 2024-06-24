@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
-const Header = (props) => {
+const Header = ({ local, localData, setLocal }) => {
   const [search, setSearch] = useState("");
   const [checkbox, setCheckbox] = useState(false);
   const navigate = useNavigate();
   const location = window.location.pathname;
+
+  const logout = () => {
+    localStorage.clear();
+    setLocal(false);
+    
+  };
+  // console.log(localData);
   const handleSearch = () => {
     if (search) {
       navigate(`/product/${search}`);
@@ -99,17 +106,48 @@ const Header = (props) => {
               </NavLink>
             </li>
             <li className={`pd `} onClick={() => setCheckbox(false)}>
-              <NavLink to="/admin" className="tt pa" id="tt">
+              <NavLink to="#" className="tt pa" id="tt">
                 Liên hệ
               </NavLink>
             </li>
           </ul>
         </div>
-        <li className={`mr-10 ${location === "/cart" && "activex"} `}>
-          <NavLink to="/cart">
-            <i className="bi bi-cart tt text-[16px] " id="tt"></i>
-          </NavLink>
-        </li>
+
+        {local == true ? (
+          <div className="flex items-center">
+            <li className={`mr-10 ${location === "/cart" && "activex"} `}>
+              <NavLink to="/cart">
+                <i className="bi bi-cart tt text-[16px] " id="tt"></i>
+              </NavLink>
+            </li>
+            <li
+              className={`mr-10 ${location === "/admin/Login" && "activex"} `}
+            >
+              <button className="tt pa" onClick={logout}>
+                Đăng xuất
+              </button>
+            </li>
+          </div>
+        ) : (
+          <div className="flex">
+            <li
+              className={`mr-10 ${location === "/admin/Login" && "activex"} `}
+            >
+              <NavLink to="admin/Login" className="tt pa">
+                Đăng Nhập
+              </NavLink>
+            </li>
+            <li
+              className={`mr-10 ${
+                location === "/admin/Register" && "activex"
+              } `}
+            >
+              <NavLink className="tt pa" to="admin/Register">
+                Đăng ký
+              </NavLink>
+            </li>
+          </div>
+        )}
       </nav>
     </div>
   );

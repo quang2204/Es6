@@ -13,7 +13,7 @@ nProgress.configure({
   trickleSpeed: 100,
 });
 const instance = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "http://localhost:4000/",
 });
 
 instance.interceptors.request.use(
@@ -22,7 +22,6 @@ instance.interceptors.request.use(
     return config;
   },
   function (error) {
-
     return Promise.reject(error);
   }
 );
@@ -33,7 +32,6 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-
     return Promise.reject(error);
   }
 );

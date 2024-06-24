@@ -12,12 +12,17 @@ import {
   Productadd,
   Productdelete,
   Productupdate,
+  Registeruser,
 } from "../../Api/Api";
 import GioHang from "../Giohang";
 import Update from "../Admin/Update";
-
+import Login from "../Admin/Login";
+import Register from "../Admin/Register";
 export default function Router() {
   const [data, setData] = useState([]);
+  const [user, setuser] = useState([]);
+  const [local, setLocal] = useState(false);
+  
   const navigate = useNavigate();
   useEffect(() => {
     sp();
@@ -38,15 +43,22 @@ export default function Router() {
         console.log(error);
       }
     })();
-    // console.log(datas);
   };
   const deletes = async (id) => {
     if (confirm("Delete successfully, redirect to admin page?")) {
-      const res = await Productdelete(id);
+      await Productdelete(id);
       setData(data.filter((item) => item.id !== id));
-      navigate("/admin");
     }
   };
+   const localData = localStorage.getItem("user");
+  useEffect(() => {
+   
+    if (localData) {
+      setLocal(true);
+    } else {
+      setLocal(false);
+    }
+  }, [navigate]);
   const UpdateProduct = (datas) => {
     (async () => {
       try {
@@ -58,10 +70,15 @@ export default function Router() {
       }
     })();
   };
+  const Dk = async (datas) => {
+    const res = await Registeruser(datas);
+    setuser(res.data);
+    navigate("/login");
+  };
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Shop />}>
+        <Route path="/" element={<Shop local={local} setLocal={setLocal} localData={localData}/>}>
           <Route index element={<Index data={data}></Index>}></Route>
           <Route
             path="/product"
@@ -74,7 +91,7 @@ export default function Router() {
           <Route path="/detail/:id" element={<Detail></Detail>}></Route>
           <Route
             path="/admin"
-            element={<Admin data={data} deletes={deletes}></Admin>}
+            element={<Admin data={data} deletes={deletes} local={local}></Admin>}
           ></Route>
           <Route
             path="/admin/productadd"
@@ -83,6 +100,11 @@ export default function Router() {
           <Route
             path="/admin/update/:id"
             element={<Update UpdateProduct={UpdateProduct}></Update>}
+          ></Route>
+          <Route path="/admin/Login" element={<Login></Login>}></Route>
+          <Route
+            path="/admin/Register"
+            element={<Register Dk={Dk}></Register>}
           ></Route>
           <Route path="/cart" element={<GioHang></GioHang>}></Route>
         </Route>

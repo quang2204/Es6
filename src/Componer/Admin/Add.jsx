@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 const Add = ({ submit }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
-
   const fileInputRef = useRef(null);
   const fileInput = useRef(null);
   const handleClick = () => {
@@ -80,6 +79,7 @@ const Add = ({ submit }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
+
   return (
     <>
       <form
