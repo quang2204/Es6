@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useData } from "../../Context/CreateContext";
 
-const Admin = ({ local, data, deletes }) => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!local) {
-      navigate("/admin/Login");
-    }
-  }, [local, navigate]);
+const Admin = () => {
+  const { data,deletes } = useData();
   return (
     <>
-      <button className="flex justify-end max-w-[1480px] w-full mt-4">
+      <button className="flex justify-end max-w-[1680px] w-full mt-4">
         <NavLink
           to="/admin/productadd"
-          className="bg-green-600 text-white px-3 py-1 rounded-md"
+          className="bg-green-600 text-white px-3 py-1 text-xl rounded-md"
         >
           Add
         </NavLink>

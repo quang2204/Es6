@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useData } from "../Context/CreateContext";
 
-const Index = (por) => {
-  const data = por.data;
+const Index = () => {
+  const { data } = useData();
   return (
     <div>
       <div id="than">

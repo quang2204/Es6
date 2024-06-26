@@ -22,7 +22,7 @@ const Registeruser = (data) => {
 const Getusers = () => {
   return Axio.get("/user");
 };
-const Login=(data)=>{
+const Loginuser=(data)=>{
   return Axio.post("/login",data)
 }
 export {
@@ -33,4 +33,5 @@ export {
   Productupdate,
   Registeruser,
   Getusers,
+  Loginuser
 };

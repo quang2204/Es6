@@ -5,7 +5,7 @@ import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Getusers } from "../../Api/Api";
+import { Getusers, Loginuser } from "../../Api/Api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,12 +30,19 @@ const Login = () => {
   });
   const handSubmit = async (data) => {
     try {
-    } catch (error) {}
+      const res = await Loginuser(data);
+      localStorage.setItem("user", JSON.stringify(res.data));
+      if (confirm("Successfully, redirect to home?")) {
+        navigate("/");
+      }
+    } catch (error) {
+      alert(error.response.data);
+    }
   };
   return (
     <>
       <form
-        onSubmit={handleSubmit()}
+        onSubmit={handleSubmit(handSubmit)}
         className="container max-w-[470px] my-5 rounded-2xl"
         style={{ boxShadow: "5px 5px 10px 1px #d7d6d6" }}
       >

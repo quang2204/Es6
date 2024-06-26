@@ -5,9 +5,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useData } from "../../Context/CreateContext";
 
-const Register = ({ Dk }) => {
-
+const Register = () => {
+  const {Dk} = useData();
   const schema = z.object({
     email: z
       .string()

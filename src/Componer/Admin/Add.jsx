@@ -2,14 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-const Add = ({ submit }) => {
+import { useData } from "../../Context/CreateContext";
+const Add = () => {
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
   const fileInputRef = useRef(null);
   const fileInput = useRef(null);
+  const { submit } = useData();
   const handleClick = () => {
     fileInputRef.current.click();
   };
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {

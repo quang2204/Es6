@@ -13,7 +13,7 @@ nProgress.configure({
   trickleSpeed: 100,
 });
 const instance = axios.create({
-  baseURL: "http://localhost:4000/",
+  baseURL: "http://localhost:3000/",
 });
 
 instance.interceptors.request.use(

@@ -129,7 +129,7 @@ const Category = ({ data, handleSort, setSp, category }) => {
           category.map((categorys, index) => (
             <>
               <p
-                className="py-2 cursor-pointer my-1"
+                className={`py-2 cursor-pointer my-1 `}
                 key={index}
                 onClick={() => handleSort(categorys)}
               >
@@ -177,7 +177,10 @@ const Sp = ({ sp, sao }) => {
 
             <div>
               {Array.from({ length: sao[index] }, (_, i) => (
-                <i className="fa-solid fa-star text-yellow-300 ml-2 mb-2 text-[13px]"></i>
+                <i
+                  className="fa-solid fa-star text-yellow-300 ml-2 mb-2 text-[13px]"
+                  key={i}
+                ></i>
               ))}
             </div>
           </div>

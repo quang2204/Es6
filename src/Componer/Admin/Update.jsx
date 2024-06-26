@@ -4,10 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useParams } from "react-router-dom";
 import { ProductDetail } from "../../Api/Api";
+import { useData } from "../../Context/CreateContext";
 
 // Define your validation schema using Zod
 const schema = z.object({
-  id: z.string(),
+  id: z.number(),
   title: z.string().min(1, "Title is required"),
   brand: z.string().min(1, "Brand is required"),
   category: z.string().min(1, "Category is required"),
@@ -17,7 +18,8 @@ const schema = z.object({
   images: z.array(z.string().url("Must be a valid URL")),
 });
 
-const Update = ({ UpdateProduct }) => {
+const Update = () => {
+  const { UpdateProduct } = useData();
   const fileInputRef = useRef(null);
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
   const { id } = useParams();
@@ -102,7 +104,11 @@ const Update = ({ UpdateProduct }) => {
     >
       <h2 className="text-center">Update Product</h2>
 
-      <input type="hidden" id="id" {...register("id")} />
+      <input
+        type="hidden"
+        id="id"
+        {...register("id", { valueAsNumber: true })}
+      />
       <div className="mb-3">
         <label htmlFor="title" className="form-label">
           Title
@@ -114,6 +120,7 @@ const Update = ({ UpdateProduct }) => {
           {...register("title")}
         />
         {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+        {errors.id && <p className="text-red-500">{errors.id.message}</p>}
       </div>
 
       <div className="mb-3">

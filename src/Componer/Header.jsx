@@ -9,7 +9,6 @@ const Header = ({ local, localData, setLocal }) => {
   const logout = () => {
     localStorage.clear();
     setLocal(false);
-    
   };
   // console.log(localData);
   const handleSearch = () => {
@@ -30,6 +29,7 @@ const Header = ({ local, localData, setLocal }) => {
       document.removeEventListener("keydown", callback);
     };
   });
+  const user = JSON.parse(localStorage.getItem("user"))?.accessToken;
   return (
     <div className="sticky top-0 z-20">
       <nav>
@@ -70,7 +70,7 @@ const Header = ({ local, localData, setLocal }) => {
           <div id="thoat" onClick={() => setCheckbox(false)}>
             <i className="bi bi-x-lg"></i>
           </div>
-          <ul className="menu">
+          <ul className="menu text-xl">
             <li
               className={`pd ${location === "/" && "activex"}`}
               onClick={() => setCheckbox(false)}
@@ -112,8 +112,7 @@ const Header = ({ local, localData, setLocal }) => {
             </li>
           </ul>
         </div>
-
-        {local == true ? (
+        {user ? (
           <div className="flex items-center">
             <li className={`mr-10 ${location === "/cart" && "activex"} `}>
               <NavLink to="/cart">
@@ -121,7 +120,9 @@ const Header = ({ local, localData, setLocal }) => {
               </NavLink>
             </li>
             <li
-              className={`mr-10 ${location === "/admin/Login" && "activex"} `}
+              className={`mr-10 text-xl ${
+                location === "/admin/Login" && "activex"
+              } `}
             >
               <button className="tt pa" onClick={logout}>
                 Đăng xuất
@@ -129,7 +130,7 @@ const Header = ({ local, localData, setLocal }) => {
             </li>
           </div>
         ) : (
-          <div className="flex">
+          <div className="flex text-xl">
             <li
               className={`mr-10 ${location === "/admin/Login" && "activex"} `}
             >
