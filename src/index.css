@@ -866,7 +866,7 @@ table {
 }
 
 .remote p {
-  margin-top: -5px;
+  margin-top: -3px;
 }
 
 .remote:hover {
@@ -999,7 +999,7 @@ table {
 }
 
 .uudai {
-  margin-top: 27px;
+  margin-top: 10px;
   border: 0;
   color: white;
   background-color: #669933;

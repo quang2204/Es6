@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ProductDetail } from "../Api/Api";
+import { useData } from "../Context/CreateContext";
 const Detail = () => {
   const [indeximg, setindeximg] = useState(0);
   const [data, setData] = useState([]);
@@ -103,9 +104,10 @@ const Images = ({ img, indeximg, setindeximg }) => {
   );
 };
 const Product = ({ data, price, presl, quantity, setQuantity, rating }) => {
+  const { AddCart } = useData();
   return (
     <div>
-      <div className="text-3xl">{data.title}</div>
+      <div className="text-2xl">{data.title}</div>
       <div>
         {data.rating &&
           [...Array(Math.round(rating))].map((_, index) => (
@@ -115,26 +117,26 @@ const Product = ({ data, price, presl, quantity, setQuantity, rating }) => {
             ></i>
           ))}
       </div>
-      <div className="text-red-500 text-2xl">{price} $</div>
+      <div className="text-red-500 text-xl">{price} $</div>
       <div className="flex items-center mt-3 gap-2">
-        <span className="text-[#757575] text-xl">Chính sách trả hàng :</span>
+        <span className="text-[#757575] ">Chính sách trả hàng :</span>
         <img
           src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/productdetailspage/b69402e4275f823f7d47.svg"
           alt=""
           className="w-[20px] "
         />
-        <p className="text-xl">{data.returnPolicy}</p>
+        <p className="">{data.returnPolicy}</p>
       </div>
       <div className="py-2 mt-2 flex items-center gap-28">
-        <span className="text-[#757575] text-xl">Hãng:</span>
-        <p className="text-xl ml-[60px]">{data.brand}</p>
+        <span className="text-[#757575] ">Hãng:</span>
+        <p className=" ml-[60px]">{data.brand}</p>
       </div>
       <div className="pb-2 mt-2 flex items-center gap-20">
-        <span className="text-[#757575] text-xl">Danh mục:</span>
-        <p className="text-xl ml-12">{data.category}</p>
+        <span className="text-[#757575] ">Danh mục:</span>
+        <p className=" ml-12">{data.category}</p>
       </div>
       <div className="pb-2 flex items-center gap-20 mt-2">
-        <span className="text-[#757575] text-xl">Số lượng :</span>
+        <span className="text-[#757575] ">Số lượng :</span>
         <div className="flex items-center ml-7">
           <div
             className=" px-3 text-2xl cursor-pointer"
@@ -158,8 +160,16 @@ const Product = ({ data, price, presl, quantity, setQuantity, rating }) => {
           </div>
         </div>
       </div>
-      <div className="py-3  text-white rounded-lg cursor-pointer bg-red-500 max-w-[120px] flex justify-center mt-2 text-xl">
-        Mua ngay
+      <div className="flex gap-4">
+        <div className="py-[10px] px-3 text-white rounded-lg cursor-pointer bg-red-500 flex justify-center mt-2 ">
+          Mua ngay
+        </div>
+        <div
+          className="py-[10px] border-solid border-[red] border-[1px] px-3  rounded-lg cursor-pointer  flex justify-center mt-2 "
+          onClick={() => AddCart(data, quantity)}
+        >
+          Thêm vào giỏ hàng
+        </div>
       </div>
     </div>
   );
@@ -168,7 +178,7 @@ const Mtdg = ({ data, reviews }) => {
   const [check, setCheck] = useState(false);
   return (
     <div className="mt-5">
-      <div className="text-2xl mb-[14px] ">
+      <div className="text-xl mb-[14px] ">
         <span
           className={`${
             check == false ? "" : "opacity-65 hover:opacity-100 cursor-pointer"
@@ -186,7 +196,7 @@ const Mtdg = ({ data, reviews }) => {
           Đánh giá {reviews.length}
         </span>
       </div>
-      <div className="border-solid border-[2px] border-[green] px-5 py-4 text-[20px] leading-9">
+      <div className="border-solid border-[2px] border-[green] px-5 py-4 text-[16px] leading-9">
         {check == false ? (
           <Description data={data}></Description>
         ) : (

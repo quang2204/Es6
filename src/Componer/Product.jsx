@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GetProduct } from "../Api/Api";
+import { useData } from "../Context/CreateContext";
 
 const Products = (props) => {
-  const list = props.data;
   const [data, setData] = useState([]);
   const [select, setSelect] = useState("popularity");
   const [sp, setSp] = useState([]);
   const [sao, setSao] = useState([]);
   const category = [...new Set(data.map((item) => item.category))];
   const param = useParams();
+
   useEffect(() => {
     if (param.id) {
       const fillter = data.filter((item) => {
@@ -37,7 +38,7 @@ const Products = (props) => {
     setSp(loc);
   };
   const handleSortPrice = (order) => {
-    const sortedData = [...sp].sort((a, b) => {
+    const sortedData = [...data].sort((a, b) => {
       if (order === "price") {
         return a.price - b.price;
       } else if (order === "price-desc") {
@@ -57,7 +58,6 @@ const Products = (props) => {
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
     setSelect(selectedValue);
-
     if (selectedValue === "price") {
       handleSortPrice("price");
     } else if (selectedValue === "price-desc") {
@@ -143,6 +143,7 @@ const Category = ({ data, handleSort, setSp, category }) => {
   );
 };
 const Sp = ({ sp, sao }) => {
+  const { AddCart } = useData();
   return (
     <div className="sp">
       {sp.length > 0 &&
@@ -171,7 +172,9 @@ const Sp = ({ sp, sao }) => {
                 <h4 className="discounted-price">{item.price} $</h4>
               </div>
               <div id="toats">
-                <button className="addToCartBtn">Thêm vào giỏ hàng</button>
+                <button className="addToCartBtn" onClick={() => AddCart(item)}>
+                  Thêm vào giỏ hàng
+                </button>
               </div>
             </div>
 

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useData } from "../Context/CreateContext";
 
 const Index = () => {
-  const { data } = useData();
+  const { data, AddCart } = useData();
+
   return (
     <div>
       <div id="than">
@@ -66,7 +67,12 @@ const Index = () => {
                     <h4 className="discounted-price">{item.price} $</h4>
                   </div>
                   <div id="toats">
-                    <button className="addToCartBtn">Thêm vào giỏ hàng</button>
+                    <button
+                      className="addToCartBtn"
+                      onClick={() => AddCart(item)}
+                    >
+                      Thêm vào giỏ hàng
+                    </button>
                   </div>
                 </div>
               </div>
