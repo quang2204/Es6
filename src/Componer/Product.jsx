@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GetProduct } from "../Api/Api";
+import { useData } from "../Context/CreateContext";
+import Loading from "./Loading/Loading";
 
 const Products = (props) => {
-  const list = props.data;
+  const { isLoading } = useData();
+  if (isLoading == false) return <Loading></Loading>;
   const [data, setData] = useState([]);
   const [select, setSelect] = useState("popularity");
   const [sp, setSp] = useState([]);
@@ -37,7 +40,7 @@ const Products = (props) => {
     setSp(loc);
   };
   const handleSortPrice = (order) => {
-    const sortedData = [...sp].sort((a, b) => {
+    const sortedData = [...data].sort((a, b) => {
       if (order === "price") {
         return a.price - b.price;
       } else if (order === "price-desc") {
@@ -57,7 +60,6 @@ const Products = (props) => {
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
     setSelect(selectedValue);
-
     if (selectedValue === "price") {
       handleSortPrice("price");
     } else if (selectedValue === "price-desc") {
@@ -142,7 +144,8 @@ const Category = ({ data, handleSort, setSp, category }) => {
     </div>
   );
 };
-const Sp = ({ sp, sao }) => {
+const Sp = memo(function Sp({ sp, sao }) {
+  const { AddCart } = useData();
   return (
     <div className="sp">
       {sp.length > 0 &&
@@ -163,15 +166,20 @@ const Sp = ({ sp, sao }) => {
             </Link>
             <div className="tsp">
               <h3 className="mt-2">
-                {item.title.length > 20
-                  ? `${item.title.slice(0, 20)}...`
+                {item.title.length > 21
+                  ? `${item.title.slice(0, 21)}...`
                   : item.title}
               </h3>
               <div className="price-container">
                 <h4 className="discounted-price">{item.price} $</h4>
               </div>
               <div id="toats">
-                <button className="addToCartBtn">Thêm vào giỏ hàng</button>
+                <button
+                  className="addToCartBtn"
+                  onClick={() => AddCart(item, 1)}
+                >
+                  Thêm vào giỏ hàng
+                </button>
               </div>
             </div>
 
@@ -187,5 +195,5 @@ const Sp = ({ sp, sao }) => {
         ))}
     </div>
   );
-};
+});
 export default Products;

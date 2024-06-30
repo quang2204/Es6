@@ -8,9 +8,8 @@ const Header = ({ local, localData, setLocal }) => {
 
   const logout = () => {
     localStorage.clear();
-    setLocal(false);
+    navigate("/admin/Login");
   };
-  // console.log(localData);
   const handleSearch = () => {
     if (search) {
       navigate(`/product/${search}`);
@@ -70,7 +69,7 @@ const Header = ({ local, localData, setLocal }) => {
           <div id="thoat" onClick={() => setCheckbox(false)}>
             <i className="bi bi-x-lg"></i>
           </div>
-          <ul className="menu text-xl">
+          <ul className="menu">
             <li
               className={`pd ${location === "/" && "activex"}`}
               onClick={() => setCheckbox(false)}
@@ -116,13 +115,11 @@ const Header = ({ local, localData, setLocal }) => {
           <div className="flex items-center">
             <li className={`mr-10 ${location === "/cart" && "activex"} `}>
               <NavLink to="/cart">
-                <i className="bi bi-cart tt text-[16px] " id="tt"></i>
+                <i className="bi bi-cart tt  " id="tt"></i>
               </NavLink>
             </li>
             <li
-              className={`mr-10 text-xl ${
-                location === "/admin/Login" && "activex"
-              } `}
+              className={`mr-10 ${location === "/admin/Login" && "activex"} `}
             >
               <button className="tt pa" onClick={logout}>
                 Đăng xuất
@@ -130,7 +127,7 @@ const Header = ({ local, localData, setLocal }) => {
             </li>
           </div>
         ) : (
-          <div className="flex text-xl">
+          <div className="flex ">
             <li
               className={`mr-10 ${location === "/admin/Login" && "activex"} `}
             >

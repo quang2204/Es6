@@ -3,7 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useData } from "../../Context/CreateContext";
+import Loading from "../Loading/Loading";
 const Add = () => {
+  const { isLoading } = useData();
+  if (isLoading == false) return <Loading></Loading>;
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
   const fileInputRef = useRef(null);
   const fileInput = useRef(null);
