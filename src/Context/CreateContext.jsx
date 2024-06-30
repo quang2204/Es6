@@ -3,6 +3,7 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -51,33 +52,37 @@ const reducer = (state, action) => {
         ),
       };
     case "cart":
-      // Kiểm tra xem mặt hàng đã tồn tại trong giỏ hàng
       try {
+        // Check if the item already exists in the cart
         const itemIndex = state.cart.findIndex(
-          (item) => item.id === action.payload.datas.id
+          (item) => item.datas.id === action.payload.datas.id
         );
 
         let updatedCart;
 
         if (itemIndex >= 0) {
-          // Update quantity of existing item
+          // Update quantity of the existing item
           updatedCart = state.cart.map((item, index) => {
             if (index === itemIndex) {
-              return { ...item, quantity: action.payload.quantity + 1 };
+              return {
+                ...item,
+                quantity: item.quantity + action.payload.quantity,
+              };
             }
             return item;
           });
         } else {
-          // Add new item to cart
+          // Add new item to the cart
           const newCartItem = {
             ...action.payload,
             quantity: action.payload.quantity,
           };
           updatedCart = [newCartItem, ...state.cart];
         }
+
         return { ...state, cart: updatedCart };
       } catch (error) {
-        toast.error(error.message);
+        console.log(error);
         return state;
       }
 
@@ -85,7 +90,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         cart: state.cart.map((item) => {
-          if (item.id === action.payload) {
+          if (item.datas.id === action.payload) {
             return { ...item, quantity: item.quantity - 1 };
           }
           return item;
@@ -96,7 +101,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         cart: state.cart.map((item) => {
-          if (item.id === action.payload) {
+          if (item.datas.id === action.payload) {
             return { ...item, quantity: item.quantity + 1 };
           }
           return item;
@@ -104,23 +109,19 @@ const reducer = (state, action) => {
       };
 
     case "CHANGE":
-      // if (action.payload.quantity > action.payload.maxorder) {
       return {
         ...state,
         cart: state.cart.map((item) => {
-          if (item.id === action.payload.id) {
+          if (item.datas.id === action.payload.id) {
             return { ...item, quantity: action.payload.quantity };
           }
           return item;
         }),
       };
-    // } else {
-    //   console.log(action.payload.quantity, action.payload.maxorder);
-    // }
     case "REMOVE":
       return {
         ...state,
-        cart: state.cart.filter((item) => item.id !== action.payload),
+        cart: state.cart.filter((item) => item.datas.id !== action.payload),
       };
     default:
       return state;
@@ -128,7 +129,7 @@ const reducer = (state, action) => {
 };
 const CreateContext = ({ children }) => {
   const [{ data, cart }, dispatch] = React.useReducer(reducer, initSate, init);
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -137,8 +138,13 @@ const CreateContext = ({ children }) => {
     sp();
   }, []);
   const sp = async () => {
-    const res = await GetProduct();
-    dispatch({ type: "data", payload: res.data });
+    try {
+      const res = await GetProduct();
+      dispatch({ type: "data", payload: res.data });
+      setIsLoading(true);
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
   const submit = (datas) => {
     (async () => {
@@ -146,17 +152,23 @@ const CreateContext = ({ children }) => {
         const res = await Productadd(datas);
         dispatch({ type: "Add", payload: res.data });
         if (confirm("Submit successfully, redirect to admin page?")) {
+          setIsLoading(true);
           navigate("/admin");
         }
       } catch (error) {
-        console.log(error);
+        setIsLoading(false);
       }
     })();
   };
   const deletes = async (id) => {
-    if (confirm("Delete successfully, redirect to admin page?")) {
-      await Productdelete(id);
-      dispatch({ type: "Delete", payload: id });
+    try {
+      if (confirm("Delete successfully, redirect to admin page?")) {
+        await Productdelete(id);
+        dispatch({ type: "Delete", payload: id });
+      }
+      setIsLoading(true);
+    } catch (error) {
+      setIsLoading(false);
     }
   };
 
@@ -164,38 +176,61 @@ const CreateContext = ({ children }) => {
     try {
       const response = await Productupdate(updatedProduct.id, updatedProduct);
       dispatch({ type: "update", payload: response.data });
+      setIsLoading(true);
       navigate("/admin");
     } catch (error) {
-      console.error(error);
+      setIsLoading(false);
     }
   };
   const Dk = async (datas) => {
-    const res = await Registeruser(datas);
-    navigate("/login");
+    try {
+      await Registeruser(datas);
+      setIsLoading(true);
+      navigate("/login");
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
   const AddCart = (datas, quantity) => {
-    dispatch({ type: "cart", payload: { datas, quantity } });
-    toast.success(
-      `Sản phẩm ${datas.title} đã được thêm vào giỏ hàng thành công`
-    );
+    try {
+      dispatch({ type: "cart", payload: { datas, quantity } });
+      toast.success(
+        `Sản phẩm ${datas.title} đã được thêm vào giỏ hàng thành công`
+      );
+      setIsLoading(true);
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
+  const value = useMemo(
+    () => ({
+      data,
+      submit,
+      deletes,
+      UpdateProduct,
+      Dk,
+      dispatch,
+      AddCart,
+      cart,
+      init,
+      isLoading,
+    }),
+    [
+      data,
+      submit,
+      deletes,
+      UpdateProduct,
+      Dk,
+      dispatch,
+      AddCart,
+      cart,
+      init,
+      isLoading,
+    ]
+  );
   return (
     <div>
-      <DataContext.Provider
-        value={{
-          data,
-          submit,
-          deletes,
-          UpdateProduct,
-          Dk,
-          dispatch,
-          AddCart,
-          cart,
-          init,
-        }}
-      >
-        {children}
-      </DataContext.Provider>
+      <DataContext.Provider value={value}>{children}</DataContext.Provider>
       <ToastContainer
         position="top-right"
         autoClose={5000}

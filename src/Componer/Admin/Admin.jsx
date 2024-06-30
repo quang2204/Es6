@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useData } from "../../Context/CreateContext";
+import Loading from "../Loading/Loading";
 
 const Admin = () => {
-  const { data,deletes } = useData();
+  const { data, deletes, isLoading } = useData();
+  if (isLoading == false) return <Loading></Loading>;
   return (
     <>
       <button className="flex justify-end max-w-[1680px] w-full mt-4">

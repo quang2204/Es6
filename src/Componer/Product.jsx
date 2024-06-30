@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GetProduct } from "../Api/Api";
 import { useData } from "../Context/CreateContext";
+import Loading from "./Loading/Loading";
 
 const Products = (props) => {
+  const { isLoading } = useData();
+  if (isLoading == false) return <Loading></Loading>;
   const [data, setData] = useState([]);
   const [select, setSelect] = useState("popularity");
   const [sp, setSp] = useState([]);
   const [sao, setSao] = useState([]);
   const category = [...new Set(data.map((item) => item.category))];
   const param = useParams();
-
   useEffect(() => {
     if (param.id) {
       const fillter = data.filter((item) => {
@@ -142,7 +144,7 @@ const Category = ({ data, handleSort, setSp, category }) => {
     </div>
   );
 };
-const Sp = ({ sp, sao }) => {
+const Sp = memo(function Sp({ sp, sao }) {
   const { AddCart } = useData();
   return (
     <div className="sp">
@@ -164,15 +166,18 @@ const Sp = ({ sp, sao }) => {
             </Link>
             <div className="tsp">
               <h3 className="mt-2">
-                {item.title.length > 20
-                  ? `${item.title.slice(0, 20)}...`
+                {item.title.length > 21
+                  ? `${item.title.slice(0, 21)}...`
                   : item.title}
               </h3>
               <div className="price-container">
                 <h4 className="discounted-price">{item.price} $</h4>
               </div>
               <div id="toats">
-                <button className="addToCartBtn" onClick={() => AddCart(item)}>
+                <button
+                  className="addToCartBtn"
+                  onClick={() => AddCart(item, 1)}
+                >
                   Thêm vào giỏ hàng
                 </button>
               </div>
@@ -190,5 +195,5 @@ const Sp = ({ sp, sao }) => {
         ))}
     </div>
   );
-};
+});
 export default Products;
